@@ -1,0 +1,4 @@
+useDynLib("Interact")
+export(interact, plot.interact, print.interact)
+S3method("plot","interact")
+S3method("print","interact")
