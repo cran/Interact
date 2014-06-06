@@ -1,9 +1,9 @@
-2a3d7873b72d3ad747918f1a32ae2109 *DESCRIPTION
+7d3f5a689adb465823f7722639f9f7a9 *DESCRIPTION
 c429de66e230e244968640e4a4e17dde *NAMESPACE
-88c09a4c34bcf6140cf2c9edf42dbd4e *R/interact.R
+4a9077bde900945adfe56bc585d504f9 *R/interact.R
 ec218659cbea76d4f7f946906e3ecef3 *R/plot.interact.R
 1a52dac8afc8ee81f5f1188218382137 *man/Interact-package.Rd
-6e67cd42cfe53aadf21876cab4c91e6c *man/interact.Rd
+338b10eeb620c0a2199470520acfb0d0 *man/interact.Rd
 726089679bc46a6c7215fb0b1e22bc20 *man/plot.interact.Rd
 ff1370a7f0e91048ead2bfd485d94351 *man/print.interact.Rd
 aad47f049073281e6c326691feb3b0b1 *src/compare.cpp

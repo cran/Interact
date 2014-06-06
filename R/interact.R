@@ -40,15 +40,15 @@ function(x, y, z = NULL, numPerm = 100, numFDR = 1000, method = "Pearson", verbo
   x1 <- x[ind1,,drop=F]
   x2 <- x[ind2,,drop=F]
 
-  x1 <- t((t(x1) - apply(x1, 2, mean))/apply(x1,2,sd))
-  x2 <- t((t(x2) - apply(x2, 2, mean))/apply(x2,2,sd))
+  x1 <- standardize.matrix(x1)
+  x2 <- standardize.matrix(x2)
 
   if(!is.null(z)){
     z1 <- z[ind1,,drop=F]
     z2 <- z[ind2,,drop=F]
     
-    z1 <- t((t(z1) - apply(z1, 2, mean))/apply(z1,2,sd))
-    z2 <- t((t(z2) - apply(z2, 2, mean))/apply(z2,2,sd))
+    z1 <- standardize.matrix(z1)
+    z2 <- standardize.matrix(z2)
     }
 
   if(is.null(z)){
@@ -60,7 +60,7 @@ function(x, y, z = NULL, numPerm = 100, numFDR = 1000, method = "Pearson", verbo
     cors2 <- cor(x2, z2, method = method)
   }
     
-  stats <- atanh(cors1) - atanh(cors2)
+  stats <- calc.stats(cors1, cors2)
   rm(cors1)
   rm(cors2)
 
@@ -136,7 +136,7 @@ function(x, y, z = NULL, numPerm = 100, numFDR = 1000, method = "Pearson", verbo
       perm.cors2 <- cor(x2.perm, z2.perm, method = method)
     }
     
-    perm.stats <- atanh(perm.cors1) - atanh(perm.cors2)
+    perm.stats <- calc.stats(perm.cors1, perm.cors2)
 
     if(is.null(z)){
       perm.stats <- perm.stats[upper.tri(perm.stats)]
@@ -182,4 +182,37 @@ print.interact <- function(x, ...){
   cat("Most significant marginal interactions:\n")
   print(mat, quote = FALSE)
   invisible()
+}
+
+### HELPER FUNCTIONS
+
+standardize.matrix <- function(mat){
+    vars <- apply(mat,2,var)
+    ind.zero <- which(vars == 0)
+    mat <- t((t(mat) - apply(mat, 2, mean))/apply(mat, 2, sd))
+    mat[,ind.zero] <- 0
+    return(mat)
+}
+
+calc.stats <- function(cors1, cors2){
+    stats <- atanh(cors1) - atanh(cors2)
+
+    ### Making sure we dont have NAs or infs
+    
+    ind1.pos <- which(cors1 == 1)
+    stats[ind1.pos] <- 100000
+    
+    ind1.neg <- which(cors1 == -1)
+    stats[ind1.neg] <- -100000
+    
+    ind2.pos <- which(cors2 == 1)
+    stats[ind2.pos] <- -10000
+
+    ind2.neg <- which(cors2 == -1)
+    stats[ind2.neg] <- 10000
+    
+    ind.NA <- unique(c(which(is.na(cors1)), which(is.na(cors2)), intersect(ind1.pos, ind2.pos), intersect(ind1.neg, ind2.neg)))
+    stats[ind.NA] <- 0
+
+    return(stats)
 }

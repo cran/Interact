@@ -86,7 +86,8 @@ X <- rbind(X1, X2)
 
 y <- c(rep("y",n),rep("n",n))
 
-fit <- interact(X,y, numFDR = 50)  ## Restricts the number of most significant interactions to consider to 50
+fit <- interact(X,y, numFDR = 50)  
+## Restricts the number of most significant interactions to consider to 50
 print(fit)
 plot(fit)
 }
@@ -104,7 +105,8 @@ Environment <- matrix(rnorm(n * p2), ncol = p2)
 
 y <- c(rep("y",n/2),rep("n",n/2))
 
-fit <- interact(X = Genes,y, Z = Environment, numFDR = 50)  ## Restricts the number of most significant interactions to consider to 50
+fit <- interact(X = Genes,y, Z = Environment, numFDR = 50)  
+## Restricts the number of most significant interactions to consider to 50
 print(fit)
 plot(fit)
 }
